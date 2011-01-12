@@ -23,43 +23,42 @@ Dacă doriți să începeți să adăugați în sistemul de control al versiunil
 Vom reveni la ce fac aceste comenzi în doar câteva momente. În acest punct, aveți un repository Git cu câteva fișiere urmărite și un commit inițial.
 
 ### Clonarea Unui Repository Existent ###
+Dacă doriți să preluați o copie a unui repository Git existent — de exemplu, un proiect la care ați dori să contribuiți — comanda de care aveți nevoie este git clone. Dacă sunteți familiarizați deja cu alte sisteme VCS cum ar fi Subversion, veți observa că denumirea comenzii este clonare (clone [en]) și nu checkout. Aceasta este o diferență importantă — Git primește o copie a tuturor datelor pe care le deține serverul. Fiecare versiune a fiecărui fișier pentru întreaga istorie a proiectului este preluată atunci când executați `git clone`. De fapt, dacă discul serverului se defectează, puteți folosi oricare din clonele aflate pe orice client pentru a reinițializa serverul în starea în care era atunci când ați făcut clona (puteți totuși pierde anumite setări legate de server, dar toate datele versionate ar fi la locul lor — vedeți Capitolul 4 pentru mai multe detalii). 
 
-If you want to get a copy of an existing Git repository — for example, a project you’d like to contribute to — the command you need is git clone. If you’re familiar with other VCS systems such as Subversion, you’ll notice that the command is clone and not checkout. This is an important distinction — Git receives a copy of nearly all data that the server has. Every version of every file for the history of the project is pulled down when you run `git clone`. In fact, if your server disk gets corrupted, you can use any of the clones on any client to set the server back to the state it was in when it was cloned (you may lose some server-side hooks and such, but all the versioned data would be there — see Chapter 4 for more details).
-
-You clone a repository with `git clone [url]`. For example, if you want to clone the Ruby Git library called Grit, you can do so like this:
+Puteți clona un repository cu `git clone [url]`. De exemplu, dacă doriți să clonați repository-ul Git pentru Ruby denumit Grit, puteți face asta în următorul mod:
 
 	$ git clone git://github.com/schacon/grit.git
 
-That creates a directory named "grit", initializes a `.git` directory inside it, pulls down all the data for that repository, and checks out a working copy of the latest version. If you go into the new `grit` directory, you’ll see the project files in there, ready to be worked on or used. If you want to clone the repository into a directory named something other than grit, you can specify that as the next command-line option:
+Această comandă creează un director denumit "grit", inițializează un director `.git` în interiorul acestuia, preia toate datele pentru acel repository, și preia și o copie a ultimei versiuni disponibile. Dacă accesați noul director `grit`, veți putea observa că acesta conține fișierele proiectului, gata de a fi utilizate sau modificate. Dacă doriți să clonați repository-ul într-un director cu alt nume decât grit, puteți specifica asta folosind următoarea opțiune în linia de comandă:
 
 	$ git clone git://github.com/schacon/grit.git mygrit
 
-That command does the same thing as the previous one, but the target directory is called mygrit.
+Această comandă face același lucru ca și comanda prezentată anterior, dar directorul destinație este denumit mygrit acum.
 
-Git has a number of different transfer protocols you can use. The previous example uses the `git://` protocol, but you may also see `http(s)://` or `user@server:/path.git`, which uses the SSH transfer protocol. Chapter 4 will introduce all of the available options the server can set up to access your Git repository and the pros and cons of each.
+Git are un număr de diverse protocoale de transfer pe care le puteți folosi. În exemplul anterior folosim protocolul `git://`, dar puteți de asemenea folosi și `http(s)://` sau `user@server:/path.git`, care utilizează SSH ca și protocol pentru transferul fișierelor. Capitolul 4 va introduce toate opțiunile disponibile date de server pentru a putea accesa repository-ul dumneavoastră Git cât și argumente pro și contra pentru fiecare din cazuri.
 
-## Recording Changes to the Repository ##
+## Înregistrarea Schimbărilor în Repository ##
 
-You have a bona fide Git repository and a checkout or working copy of the files for that project. You need to make some changes and commit snapshots of those changes into your repository each time the project reaches a state you want to record.
+Acum aveți un repository Git bona fide și un checkout (preluare [ro]) recentă a fișierelor pentru acel proiect. Trebuie să faceți niște schimbări și să comiteți instantanee ale acelor schimbări în repository de fiecare dată când proiectul ajunge într-o stare pe care doriți să o păstrați.
 
-Remember that each file in your working directory can be in one of two states: tracked or untracked. Tracked files are files that were in the last snapshot; they can be unmodified, modified, or staged. Untracked files are everything else - any files in your working directory that were not in your last snapshot and are not in your staging area.  When you first clone a repository, all of your files will be tracked and unmodified because you just checked them out and haven’t edited anything.
+Țineți minte că fiecare fișier din directorul curent poate fi într-una din cele două stări: urmărit sau ne-urmărit (tracked/untracked [en]). Fișierele urmărite sunt fișiere care erau prezente și în ultimul snapshot; acestea pot fi neatinse, modificate, sau staged. Fișierele ne-urmărite sunt toate celelalte — orice fișiere din directorul curent care nu erau în ultimul snapshot și nu sunt prezente în zona de staging. Atunci când clonați pentru prima data un repository, toate fișierele dumneavoastră vor fi urmărite și neatinse deoarece tocmai le-ați preluat și nu ați editat niciunul din ele. 
 
-As you edit files, Git sees them as modified, because you’ve changed them since your last commit. You stage these modified files and then commit all your staged changes, and the cycle repeats. This lifecycle is illustrated in Figure 2-1.
+Pe măsură ce editați fișiere, Git le vede ca și modificate, deoarece le-ați modicat de la ultimul comit. Pregătiți aceste fișiere modificate și apoi comiteți toate schimbările pregătite (staged [en]), iar apoi ciclul se repetă. Acest ciclu este prezentat în Figura 2-1.
 
 Insert 18333fig0201.png
-Figure 2-1. The lifecycle of the status of your files.
+Figura 2-1. Ciclul de viață al stării fișierelor dumneavoastră.
 
-### Checking the Status of Your Files ###
+### Verificarea Stării Fișierelor Dumneavoastră ###
 
-The main tool you use to determine which files are in which state is the git status command. If you run this command directly after a clone, you should see something like this:
+Unealta principală pe care o folosiți pentru a determina care fișiere sunt prezente și starea lor este git status. Dacă rulați această comandă imediat după git clone, ar trebui să obțineți ceva similar cu:
 
 	$ git status
 	# On branch master
 	nothing to commit (working directory clean)
 
-This means you have a clean working directory — in other words, there are no tracked and modified files. Git also doesn’t see any untracked files, or they would be listed here. Finally, the command tells you which branch you’re on. For now, that is always master, which is the default; you won’t worry about it here. The next chapter will go over branches and references in detail.
+Aceasta înseamnă că aveți un director preluat curat — sau în alte cuvinte, că nu există fișiere urmărite care sunt modificate. Git de asemenea nu poate observa fișiere ne-urmărite, sau ele ar fi prezente aici. În cele din urmă, comanda ne spune pe care ramură (branch [en]) a proiectului ne aflăm. Pentru moment, aceasta este întotdeauna master, care este cea implicită; încă nu trebuie să ne facem griji pentru acest aspect încă. În următorul capitol vom avea în vedere ramurile și referințele în detaliu.
 
-Let’s say you add a new file to your project, a simple README file. If the file didn’t exist before, and you run `git status`, you see your untracked file like so:
+Să presupunem acum că dorim să adăugăm un fișier la proiect, un simplu fișier README. Dacă fișierul nu a existat înainte, și rulăm `git status`, vom putea observa fișierele ne-urmărite astfel:
 
 	$ vim README
 	$ git status
@@ -70,15 +69,15 @@ Let’s say you add a new file to your project, a simple README file. If the fil
 	#	README
 	nothing added to commit but untracked files present (use "git add" to track)
 
-You can see that your new README file is untracked, because it’s under the “Untracked files” heading in your status output. Untracked basically means that Git sees a file you didn’t have in the previous snapshot (commit); Git won’t start including it in your commit snapshots until you explicitly tell it to do so. It does this so you don’t accidentally begin including generated binary files or other files that you did not mean to include. You do want to start including README, so let’s start tracking the file.
+Puteți observa că noul fișier README nu este urmărit, deoarece este în categoria "Untracked files" (fișiere ne-urmărite [ro]) afișat de comanda status. Aceasta înseamnă că Git observă un fișier care nu era prezent în instantaneul trecut (commit); Git nu va adăuga acest fișier în mod automat la cele urmărite până în momentul în care nu îi indicați explicit acest fapt. Acest comportament este folosit pentru a nu include în mod accidental fișiere binare generate sau alte fișiere pe care nu doreați să le urmăriți. Acum pentru că dorim să includem README, vom începe să adăugăm și acest fișier la lista celor urmărite. 
 
-### Tracking New Files ###
+### Urmărirea Noilor Fișiere ###
 
-In order to begin tracking a new file, you use the command `git add`. To begin tracking the README file, you can run this:
+Pentru a începe urmărirea unui nou fișier, vom folosi comanda `git add`. Pentru a adăuga fișierul README la cele urmărite, vom rula următoarea comandă:
 
 	$ git add README
 
-If you run your status command again, you can see that your README file is now tracked and staged:
+Dacă executăm iarăși comanda status, putem vedea faptul că fișierul README este acum pregătit și urmărit:
 
 	$ git status
 	# On branch master
@@ -88,11 +87,11 @@ If you run your status command again, you can see that your README file is now t
 	#	new file:   README
 	#
 
-You can tell that it’s staged because it’s under the “Changes to be committed” heading. If you commit at this point, the version of the file at the time you ran git add is what will be in the historical snapshot. You may recall that when you ran git init earlier, you then ran git add (files) — that was to begin tracking files in your directory. The git add command takes a path name for either a file or a directory; if it’s a directory, the command adds all the files in that directory recursively.
+Putem determina faptul că este pregătit pentru că este în categoria “Changes to be committed”. Dacă comiteți în acest moment, versiunea fișierului la momentul când ați efectuat git add este ceea va fi prezent în instantaneul istoriei. Poate vă amintiți că în momentul când ați efectuat git init, am executat apoi comanda git add (fișiere) — folosită pentru a începe să urmărim fișiere din directorul dumneavoastră. Comanda git add preia o cale de fișier fie pentru un fișier fie pentru un director; dacă este un director, comandă adaugă toate fișierele din acel director în mod recursiv.
 
-### Staging Modified Files ###
+### Pregătirea Fișierelor Modificate ###
 
-Let’s change a file that was already tracked. If you change a previously tracked file called `benchmarks.rb` and then run your `status` command again, you get something that looks like this:
+Să schimbăm un fișiere care era deja urmărit. Dacă schimbați un fișier urmărit anterior denumit `benchmarks.rb` și apoi rulați `status`, vom obține ceva similar cu:
 
 	$ git status
 	# On branch master
@@ -107,7 +106,7 @@ Let’s change a file that was already tracked. If you change a previously track
 	#	modified:   benchmarks.rb
 	#
 
-The benchmarks.rb file appears under a section named “Changed but not updated” — which means that a file that is tracked has been modified in the working directory but not yet staged. To stage it, you run the `git add` command (it’s a multipurpose command — you use it to begin tracking new files, to stage files, and to do other things like marking merge-conflicted files as resolved). Let’s run `git add` now to stage the benchmarks.rb file, and then run `git status` again:
+Se pare că fișierul benchmarks.rb apare în secțiunea “Changed but not updated” (schimbat dar ne-actualizat) — ceea ce înseamnă că un fișier care este urmărit a fost modificat în directorul de lucru dar nu a fost încă staged. Pentru a-l pregăti, puteți executa comanda `git add` (este o comandă cu mai multe scopuri — o folosim pentru a începe să urmărim fișiere noi, pentru a pregăti fișiere ce urmează să fie comise, și pentru a face alte lucruri cum ar fi să marcăm problemele date de conflice de merging (fuzionare [ro]) ca și rezolvate). Să executăm `git add` acum pentru a pregăti fișierul benchmarks.rb, și apoi să executăm `git status` iarăși:
 
 	$ git add benchmarks.rb
 	$ git status
@@ -119,7 +118,7 @@ The benchmarks.rb file appears under a section named “Changed but not updated�
 	#	modified:   benchmarks.rb
 	#
 
-Both files are staged and will go into your next commit. At this point, suppose you remember one little change that you want to make in benchmarks.rb before you commit it. You open it again and make that change, and you’re ready to commit. However, let’s run `git status` one more time:
+Ambele fișiere sunt pregătite și vor intra în următorul comit. În acest punct, să presupunem că vă amintiți faptul că doreați să mai faceți o mică schimbare în benchmarks.rb înainte de a-l comite. Editați fișierul cu adiția dorită, și acum sunteți gata să vă incheiați treaba. Oricum, să executăm `git status` o ultimă dată:
 
 	$ vim benchmarks.rb
 	$ git status
@@ -136,7 +135,7 @@ Both files are staged and will go into your next commit. At this point, suppose 
 	#	modified:   benchmarks.rb
 	#
 
-What the heck? Now benchmarks.rb is listed as both staged and unstaged. How is that possible? It turns out that Git stages a file exactly as it is when you run the git add command. If you commit now, the version of benchmarks.rb as it was when you last ran the git add command is how it will go into the commit, not the version of the file as it looks in your working directory when you run git commit. If you modify a file after you run `git add`, you have to run `git add` again to stage the latest version of the file:
+Dar ce se întâmplă? Acum benchmarks.rb este listat atât ca pregătit cât și ne-pregătit. Cum este una ca asta posibil? Se pare că Git pregătește un fișier exact ca atunci când executăm comand git add. Daca comiteți acum, versiunea fișierului benchmarks.rb este cea din momentul când ați rulat git add și este cea care se va trimite în acest instantaneu, și nu este versiunea fișierului modificat în prezent când executați git commit. Dacă modicați un fișier după ce executați `git add`, trebuie să rulați iarăși `git add` pentru a pregăti ultima versiune a fișierului:
 
 	$ git add benchmarks.rb
 	$ git status
@@ -148,7 +147,7 @@ What the heck? Now benchmarks.rb is listed as both staged and unstaged. How is t
 	#	modified:   benchmarks.rb
 	#
 
-### Ignoring Files ###
+### Ignorarea Fișierelor ###
 
 Often, you’ll have a class of files that you don’t want Git to automatically add or even show you as being untracked. These are generally automatically generated files such as log files or files produced by your build system. In such cases, you can create a file listing patterns to match them named .gitignore.  Here is an example .gitignore file:
 
