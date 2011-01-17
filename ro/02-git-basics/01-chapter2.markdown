@@ -149,37 +149,37 @@ Dar ce se întâmplă? Acum benchmarks.rb este listat atât ca pregătit cât ș
 
 ### Ignorarea Fișierelor ###
 
-Often, you’ll have a class of files that you don’t want Git to automatically add or even show you as being untracked. These are generally automatically generated files such as log files or files produced by your build system. In such cases, you can create a file listing patterns to match them named .gitignore.  Here is an example .gitignore file:
+De multe ori, veți avea o clasă de fișiere pe care nu doriți ca Git să le adauge automat sau să le marcheze ca fiind ne-urmărite. Acestea sunt de obicei fișiere generate cum ar fi log-uri sau fișiere binare produse de sistemul de construcție al aplicației. În aceste cazuri, puteți crea un model de listare care să le ignore denumit .gitignore. Iată un exemplu de fișier .gitignore:
 
 	$ cat .gitignore
 	*.[oa]
 	*~
 
-The first line tells Git to ignore any files ending in .o or .a — object and archive files that may be the product of building your code. The second line tells Git to ignore all files that end with a tilde (`~`), which is used by many text editors such as Emacs to mark temporary files. You may also include a log, tmp, or pid directory; automatically generated documentation; and so on. Setting up a .gitignore file before you get going is generally a good idea so you don’t accidentally commit files that you really don’t want in your Git repository.
+Prima linie informează Git să ignore orice fișiere care se termină în .o sau .a — fișiere obiect sau arhivă care pot fi produse după construirea proiectului dumneavoastră. A doua linie îi spune lui Git să ignore toate fișierele care se termină cu tilda (`~`), caracter folosit de multe editoare text cum ar fi Emacs pentru a marca fișierele temporare. Puteți de asemenea include log, tmp sau directorul pid; documentație generată automat; ș.a.m.d. Configurarea unui fișier .gitignore înainte de începerea proiectului este de obicei o idee bună astfel ca să nu adăugați accidental fișiere pe care nu le doriți prezente în repository-ul Git.
 
-The rules for the patterns you can put in the .gitignore file are as follows:
+Regulile pentru modelele pe care le puteți utiliza în fișierul .gitignore sunt următoarele:
 
-*	Blank lines or lines starting with # are ignored.
-*	Standard glob patterns work.
-*	You can end patterns with a forward slash (`/`) to specify a directory.
-*	You can negate a pattern by starting it with an exclamation point (`!`).
+*	Linii goale sau linii care încep cu # sunt ignorate.
+*	Caracterele standard pentru identificarea fișierelor (glob [en]) funcționează.
+*	Puteți termina modelele cu slash (`/`) pentru a specifica un director.
+*	Puteți nega un model dacă începeți cu semn de exclamare (`!`).
 
-Glob patterns are like simplified regular expressions that shells use. An asterisk (`*`) matches zero or more characters; `[abc]` matches any character inside the brackets (in this case a, b, or c); a question mark (`?`) matches a single character; and brackets enclosing characters separated by a hyphen(`[0-9]`) matches any character between them (in this case 0 through 9) .
+Modelele standard pentru identificarea fișierelor sunt un model de expresii regulare folosite de linia de comandă. Unul sau mai multe steluțe (`*`) corespunde la zero sau mai multe caractere; `[abc]` corespunde oricărui caracter din paranteze (în acest caz a, b, sau c); un semn de întrebare (`?`) corespunde unui singur caracter; și paranteze în jurul caracterelor separate de liniuță(`[0-9]`) corespund oricărui caracter dintre paranteze (în acest caz cifrele de la 0 la 9) .
 
-Here is another example .gitignore file:
+Iată un alt exemplu de fișier .gitignore:
 
-	# a comment - this is ignored
-	*.a       # no .a files
-	!lib.a    # but do track lib.a, even though you're ignoring .a files above
-	/TODO     # only ignore the root TODO file, not subdir/TODO
-	build/    # ignore all files in the build/ directory
-	doc/*.txt # ignore doc/notes.txt, but not doc/server/arch.txt
+	# un comentariu - acesta este ignorat
+	*.a       # fără fișiere .a
+	!lib.a    # dar include lib.a, chiar dacă ingorăm fișierele .a deasupra
+	/TODO     # ignoră doar fișierul TODO din directorul rădăcină, nu și din subdirectorul /TODO
+	build/    # ignoră toate fișierele din directorul build/
+	doc/*.txt # ignoră doc/notes.txt, dar nu și doc/server/arch.txt
 
-### Viewing Your Staged and Unstaged Changes ###
+### Vizualizarea Schimbărilor Pregătite și a Celor Nepregătite ###
 
-If the `git status` command is too vague for you — you want to know exactly what you changed, not just which files were changed — you can use the `git diff` command. We’ll cover `git diff` in more detail later; but you’ll probably use it most often to answer these two questions: What have you changed but not yet staged? And what have you staged that you are about to commit? Although `git status` answers those questions very generally, `git diff` shows you the exact lines added and removed — the patch, as it were.
+Dacă comanda `git status` este prea vagă pentru dumneavoastră — doriți să știți exact ce ați schimbat, nu doar ce fișiere au fost schimbate — puteți folosi comanda `git diff`. Vom analiza `git diff` în mai multe detalii mai târziu; dar probabil veți dori să o folosiți mai des pentru a afla răspunsul la două întrebări: Ce am schimbat dar nu este încă staged? Și ce este pregătit și urmează să comitem? Chiar dacă `git status` ne răspunde la aceste întrebări într-un mod general, `git diff` ne indică exact ce linii au fost adăugate și șterse — mai exact, patch-ul.
 
-Let’s say you edit and stage the README file again and then edit the benchmarks.rb file without staging it. If you run your `status` command, you once again see something like this:
+Să presupunem că editați și pregătiți fișierul README din nou și apoi editați fișierul benchmarks.rb fără a-l pregăti. Dacă aplelați comanda `status`, vom observa ceva similar cu:
 
 	$ git status
 	# On branch master
@@ -194,7 +194,7 @@ Let’s say you edit and stage the README file again and then edit the benchmark
 	#	modified:   benchmarks.rb
 	#
 
-To see what you’ve changed but not yet staged, type `git diff` with no other arguments:
+Pentru a vedea ce este schimbat dar nu încă pregătit, scrieți `git diff` fără alte argumente:
 
 	$ git diff
 	diff --git a/benchmarks.rb b/benchmarks.rb
@@ -213,9 +213,9 @@ To see what you’ve changed but not yet staged, type `git diff` with no other a
 	           log = git.commits('master', 15)
 	           log.size
 
-That command compares what is in your working directory with what is in your staging area. The result tells you the changes you’ve made that you haven’t yet staged.
+Această comandă compară ceea ce este prezent în directorul de lucru cu ceea ce se află în zona de pregătire. Rezultatul ne indică schimbările făcute pe care nu le-ați pregătit încă.
 
-If you want to see what you’ve staged that will go into your next commit, you can use `git diff --cached`. (In Git versions 1.6.1 and later, you can also use `git diff --staged`, which may be easier to remember.) This command compares your staged changes to your last commit:
+Dacă doriți să vedeți ceea ce este pregătit pentru a fi adăugat în următorul comit, puteți folosi `git diff --cached`. (În Git versiunile 1.6.1 și după, puteți de asemenea folosi`git diff --staged`, ceea ce ar putea fi mai simplu de amintit.) Această comandă compară schimbările pregătite cu ultimul commit:
 
 	$ git diff --cached
 	diff --git a/README b/README
@@ -230,9 +230,9 @@ If you want to see what you’ve staged that will go into your next commit, you 
 	+
 	+Grit is a Ruby library for extracting information from a Git repository
 
-It’s important to note that `git diff` by itself doesn’t show all changes made since your last commit — only changes that are still unstaged. This can be confusing, because if you’ve staged all of your changes, `git diff` will give you no output.
+Este important de considerat faptul că `git diff` nu ne arată toate schimbările făcute de la ultimul comit — ci doar schimbările care sunt încă nepregătite. Aceasta poate fi puțin confuz, deoarece dacă ați pregătit toate schimbările, `git diff` nu va afișa nimic.
 
-For another example, if you stage the benchmarks.rb file and then edit it, you can use `git diff` to see the changes in the file that are staged and the changes that are unstaged:
+Pentru un alt exemplu, dacă pregătiți fișierul benchmarks.rb și apoi îl editați, puteți folosi `git diff` pentru a vedea schimbările din fișier care sunt pregătite și cele care nu sunt încă pregătite:
 
 	$ git add benchmarks.rb
 	$ echo '# test line' >> benchmarks.rb
@@ -248,7 +248,7 @@ For another example, if you stage the benchmarks.rb file and then edit it, you c
 	#	modified:   benchmarks.rb
 	#
 
-Now you can use `git diff` to see what is still unstaged
+Acum puteți folosi `git diff` pentru a vedea ceea ce nu este încă pregătit
 
 	$ git diff
 	diff --git a/benchmarks.rb b/benchmarks.rb
@@ -261,7 +261,7 @@ Now you can use `git diff` to see what is still unstaged
 	 ##pp Grit::GitRuby.cache_client.stats
 	+# test line
 
-and `git diff --cached` to see what you’ve staged so far:
+și `git diff --cached` pentru a vedea ceea ce este pregătit până în prezent:
 
 	$ git diff --cached
 	diff --git a/benchmarks.rb b/benchmarks.rb
@@ -280,16 +280,16 @@ and `git diff --cached` to see what you’ve staged so far:
 	          log = git.commits('master', 15)
 	          log.size
 
-### Committing Your Changes ###
+### Comiterea Schimbărilor Făcute ###
 
-Now that your staging area is set up the way you want it, you can commit your changes. Remember that anything that is still unstaged — any files you have created or modified that you haven’t run `git add` on since you edited them — won’t go into this commit. They will stay as modified files on your disk.
-In this case, the last time you ran `git status`, you saw that everything was staged, so you’re ready to commit your changes. The simplest way to commit is to type `git commit`:
+Acum că zona de staging este setată cum doriți, puteți comite schimbările dumneavoastră. Țineți minte că tot ceea ce nu este nepregătit — orice fișiere pe care le-ați creat sau modificat pe care nu le-ați marcat cu `git add` de la ultima editare — nu vor fi adăugate în acest comit. Ele vor rămâne ca și fișiere modificate pe disc.
+În acest caz, ultima dată când ați executat `git status`, ați văzut tot ceea ce era pregătit, așa că sunteți gata să vă adăugați schimbările. Cel mai simplu mod de a comite este să scrieți `git commit`:
 
 	$ git commit
 
-Doing so launches your editor of choice. (This is set by your shell’s `$EDITOR` environment variable — usually vim or emacs, although you can configure it with whatever you want using the `git config --global core.editor` command as you saw in Chapter 1).
+Făcând asta lansează editorul ales. (Acesta este configurat cu variabila de mediu `$EDITOR` — de obicei vim sau emacs, cu toate ca puteți configura orice comandă doriți folosind `git config --global core.editor` după cum a fost prezentat în Capitolul 1).
 
-The editor displays the following text (this example is a Vim screen):
+Editorul afișează următorul text (acest exemplu este dintr-un ecran Vim):
 
 	# Please enter the commit message for your changes. Lines starting
 	# with '#' will be ignored, and an empty message aborts the commit.
@@ -304,20 +304,20 @@ The editor displays the following text (this example is a Vim screen):
 	~
 	".git/COMMIT_EDITMSG" 10L, 283C
 
-You can see that the default commit message contains the latest output of the `git status` command commented out and one empty line on top. You can remove these comments and type your commit message, or you can leave them there to help you remember what you’re committing. (For an even more explicit reminder of what you’ve modified, you can pass the `-v` option to `git commit`. Doing so also puts the diff of your change in the editor so you can see exactly what you did.) When you exit the editor, Git creates your commit with that commit message (with the comments and diff stripped out).
+Puteți observa că mesajul implicit pentru comit conține ultimul status al comenzii `git status` ca și comentariu și o linie goală deasupra. Puteți șterge aceste comentarii și să le înlocuiți cu propriul mesaj, sau puteți să le lăsați în forma prezentă pentru a vă reaminti ceea ce ați modificat. (Pentru un reminder mai explicit a ceea ce ați modificat, puteți alege opțiunea `-v` când apelați `git commit`. Făcând asta veți adăuga diferențele introduse în editor așa că puteți vedea exact ceea ce ați modificat.) La părăsirea editorului, Git va crea comitul cu mesajul specificat în editor (cu comentariile și diferențele scoase).
 
-Alternatively, you can type your commit message inline with the `commit` command by specifying it after a -m flag, like this:
+Alternativ, puteți adăuga propriul mesaj intr-o singură linie odată cu comanda `commit` specificând după ea parametrul -m, similar cu:
 
 	$ git commit -m "Story 182: Fix benchmarks for speed"
 	[master]: created 463dc4f: "Fix benchmarks for speed"
 	 2 files changed, 3 insertions(+), 0 deletions(-)
 	 create mode 100644 README
 
-Now you’ve created your first commit! You can see that the commit has given you some output about itself: which branch you committed to (master), what SHA-1 checksum the commit has (`463dc4f`), how many files were changed, and statistics about lines added and removed in the commit.
+Acum ați creat primul comit! Puteți vedea că și comitul a prezentat anumite informații despre comit: pe care ramură ați comis către (master), ce sumă de control SHA-1 are comitul (`463dc4f`), câte fișiere au fost schimbate, și statistici despre linii de cod șterse sau adăugate în comitul curent.
 
-Remember that the commit records the snapshot you set up in your staging area. Anything you didn’t stage is still sitting there modified; you can do another commit to add it to your history. Every time you perform a commit, you’re recording a snapshot of your project that you can revert to or compare to later.
+Țineți minte că commit menține un instantaneu pe care l-ați setat în zona de pregătire. Orice nu ați pregătit se află încă pe disc și este încă modificat; puteți adăuga un nou comit pentru a-l adăuga la istoria înregistrată a proiectului. De fiecare dată când efectuați commit, înregistrați un instantaneu al proiectului la care puteți reveni sau cu care îl puteți compara  mai târziu.
 
-### Skipping the Staging Area ###
+### Sărind Peste Zona de Pregătire ###
 
 Although it can be amazingly useful for crafting commits exactly how you want them, the staging area is sometimes a bit more complex than you need in your workflow. If you want to skip the staging area, Git provides a simple shortcut. Providing the `-a` option to the `git commit` command makes Git automatically stage every file that is already tracked before doing the commit, letting you skip the `git add` part:
 
