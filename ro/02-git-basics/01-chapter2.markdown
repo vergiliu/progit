@@ -319,7 +319,7 @@ Acum ați creat primul comit! Puteți vedea că și comitul a prezentat anumite 
 
 ### Sărind Peste Zona de Pregătire ###
 
-Although it can be amazingly useful for crafting commits exactly how you want them, the staging area is sometimes a bit more complex than you need in your workflow. If you want to skip the staging area, Git provides a simple shortcut. Providing the `-a` option to the `git commit` command makes Git automatically stage every file that is already tracked before doing the commit, letting you skip the `git add` part:
+Chiar dacă poate fi incredibil de folositor în crearea comiturilor exact cum le doriți, zona de pregătire este uneori puțin mai complexă decât este necesar într-un flux obișnuit. Dacă doriți să treceți peste acest pas, Git vă oferă o simplă scurtătură. Apelând `git commit` cu opțiunea `-a` Git aduce în zona de pregătire fiecare fișier care este deja urmărit înainte de a face comit, permițându-vă să treceți peste partea cu `git add`:
 
 	$ git status
 	# On branch master
@@ -332,13 +332,13 @@ Although it can be amazingly useful for crafting commits exactly how you want th
 	[master 83e38c7] added new benchmarks
 	 1 files changed, 5 insertions(+), 0 deletions(-)
 
-Notice how you don’t have to run `git add` on the benchmarks.rb file in this case before you commit.
+Putem observa cum în acest caz nu a mai fost nevoie să apelăm `git add` pentru benchmarks.rb înainte de comit.
 
-### Removing Files ###
+### Ștergerea Fișierelor ###
 
-To remove a file from Git, you have to remove it from your tracked files (more accurately, remove it from your staging area) and then commit. The `git rm` command does that and also removes the file from your working directory so you don’t see it as an untracked file next time around.
+Pentru a șterge un fișier din Git, trebuie să îl scoatem din lista fișierelor urmărite (mai exact, să îl ștergem din zona de pregătire) și apoi să comitem. Comanda `git rm` face exact asta și de asemenea șterge fișierul din directorul de lucru astfel că nu va mai apare ca și un fișier ne-urmărit pentru următoarele operații.
 
-If you simply remove the file from your working directory, it shows up under the “Changed but not updated” (that is, _unstaged_) area of your `git status` output:
+Dacă pur și simplu ștergeți fișierul din directorul de lucru, acesta va apare în categoria celor schimbate dar ne-comise (“Changed but not updated” (adică, _ne-urmărite_) din cadrul comenzii `git status`:
 
 	$ rm grit.gemspec
 	$ git status
@@ -350,7 +350,7 @@ If you simply remove the file from your working directory, it shows up under the
 	#       deleted:    grit.gemspec
 	#
 
-Then, if you run `git rm`, it stages the file’s removal:
+Apoi, dacă apelăm `git rm`, pregătește fișierul pentru ștergere:
 
 	$ git rm grit.gemspec
 	rm 'grit.gemspec'
@@ -363,31 +363,31 @@ Then, if you run `git rm`, it stages the file’s removal:
 	#       deleted:    grit.gemspec
 	#
 
-The next time you commit, the file will be gone and no longer tracked. If you modified the file and added it to the index already, you must force the removal with the `-f` option. This is a safety feature to prevent accidental removal of data that hasn’t yet been recorded in a snapshot and that can’t be recovered from Git.
+Următoarea dată cănd comitem, fișierul va dispare și nu va mai fi urmărit. Dacă ați modificat fișierul și l-ați adăugat la index deja, trebuie să forțați ștergerea lui cu opțiunea `-f`. Această operație este necesară pentru a preveni ștergeri accidentale ale datelor care nu au fost încă înregistrate într-un instantaneu și care nu pot fi recuperate cu ajutorul lui Git. 
 
-Another useful thing you may want to do is to keep the file in your working tree but remove it from your staging area. In other words, you may want to keep the file on your hard drive but not have Git track it anymore. This is particularly useful if you forgot to add something to your `.gitignore` file and accidentally added it, like a large log file or a bunch of `.a` compiled files. To do this, use the `--cached` option:
+Un alt lucru folositor pe care veți dori să îl faceți este să păstrați fișierul în cadrul structurii de lucru dar să îl ștergeți din zona de pregătire. Sau cu alte cuvinte, veți dori să păstrați fișierul pe hard disk dar nu doriți ca Git să îl mai urmărească. Acesta lucru este util dacă ați uitat să adăugați ceva în fișierul `.gitignore` și accidental l-ați adăugat, un exemplu bun ar fi un fișier log foarte mare sau mai multe fișiere `.a` compilate. Pentru a face asta, folosiți opțiunea `--cached`:
 
 	$ git rm --cached readme.txt
 
-You can pass files, directories, and file-glob patterns to the `git rm` command. That means you can do things such as
+Puteți folosi această opțiune atât pentru fișiere, directoare, și glob-pattern pentru comanda `git rm`. Deci puteți face lucruri ca și
 
 	$ git rm log/\*.log
 
-Note the backslash (`\`) in front of the `*`. This is necessary because Git does its own filename expansion in addition to your shell’s filename expansion. This command removes all files that have the `.log` extension in the `log/` directory. Or, you can do something like this:
+Luați în considerare folosirea backslash (`\`) înainte de `*`. Aceasta este necesară deoarece Gitare propriul model de expandare a numelor fișierelor în plus de cel folosit de shell-ul curent. Această comandă șterge toate fișierele cu extensia `.log` din directorul `log/`. Sau, puteți face ceva asemănător:
 
 	$ git rm \*~
 
-This command removes all files that end with `~`.
+Această comandă șterge toate fișierele care se termină cu `~`.
 
-### Moving Files ###
+### Mutarea Fișierelor ###
 
-Unlike many other VCS systems, Git doesn’t explicitly track file movement. If you rename a file in Git, no metadata is stored in Git that tells it you renamed the file. However, Git is pretty smart about figuring that out after the fact — we’ll deal with detecting file movement a bit later.
+Spre diferență de multe alte sisteme VCS, Git nu vă urmărește în mod explicit mișcările de fișiere. Dacă redenumiți un fișier în Git, nu vor fi stocate metadate în Git care să îl informeze despre redenumirea fișierelor. Cu toate acestea, Git este destul de inteligent pentru a realiza schimbările după întreprinderea acțiunii — vom discuta mai târziu despre detectarea mutării fișierelor puțin mai târziu.
 
-Thus it’s a bit confusing that Git has a `mv` command. If you want to rename a file in Git, you can run something like
+Așadar este puțin complicat/confusing faptul că Git are o comandă `mv`. Dacă doriți să redenumiți un fișier în Git, puteți executa o comandă similară cu următoarea
 
 	$ git mv file_from file_to
 
-and it works fine. In fact, if you run something like this and look at the status, you’ll see that Git considers it a renamed file:
+și va funcționa corect. De fapt, dacă vă veți uita la status după rularea comenzii veți observa că Git o consideră o comandă folosită pentru redenumirea unui fișier:
 
 	$ git mv README.txt README
 	$ git status
@@ -400,15 +400,15 @@ and it works fine. In fact, if you run something like this and look at the statu
 	#       renamed:    README.txt -> README
 	#
 
-However, this is equivalent to running something like this:
+Dar, aceasta este echivalentă cu a executa ceva similar cu această comandă:
 
 	$ mv README.txt README
 	$ git rm README.txt
 	$ git add README
 
-Git figures out that it’s a rename implicitly, so it doesn’t matter if you rename a file that way or with the `mv` command. The only real difference is that `mv` is one command instead of three — it’s a convenience function. More important, you can use any tool you like to rename a file, and address the add/rm later, before you commit.
+Git determină că este vorba de o redenumire în mod implicit, așa că nu va conta dacă veți redenumi un fișier în acest fel sau cu ajutorul comenzii `mv`. Singura diferența vizibilă este că `mv` reprezintă o singură comandă în locul a trei comenzi — este doar o funcție de conveniență. Mai important, puteți folosi orice utilitar doriți pentru a redenumi un fișier, și va/vom adresa comenzile add/rm mai târziu, înainte de a comite.
 
-## Viewing the Commit History ##
+## Vizualizarea Istoricului Commit-urilor ##
 
 After you have created several commits, or if you have cloned a repository with an existing commit history, you’ll probably want to look back to see what has happened. The most basic and powerful tool to do this is the `git log` command.
 
