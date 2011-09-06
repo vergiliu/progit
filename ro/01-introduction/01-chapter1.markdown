@@ -38,7 +38,6 @@ Insert 18333fig0103.png
 Figura 1-3. Diagramă cu sistemul distribuit al versiunilor.
 
 Mai mult, multe din aceste sisteme se descurcă suficient de bine cu lucrul simultan cu mai multe repository-uri, așă că putem colabora cu diferite grupuri de oameni în diverse moduri în același timp în cadrul aceluiași proiect. Aceasta ne permite să ne configurăm diverse modele de lucru care nu sunt posibile în sistemele centralizate, de exemplu un model ierarhic.
-Furthermore, many of these systems deal pretty well with having several remote repositories they can work with, so you can collaborate with different groups of people in different ways simultaneously within the same project. This allows you to set up several types of workflows that aren’t possible in centralized systems, such as hierarchical models.
 
 ## O Scurtă Istorie a Git ##
 
